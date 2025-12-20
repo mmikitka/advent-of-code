@@ -1,0 +1,64 @@
+import re
+import sys
+
+def main():
+    with open(sys.argv[1], "r") as f:
+        for line in f:
+            ranges = process_line(line.rstrip())
+
+    invalid_sum = 0
+    for r in ranges:
+        for invalid_id in process_range(r):
+            invalid_sum += invalid_id
+
+    print(f"Invalid sum = {invalid_sum}")
+
+# Key is number of digits in the number
+DIVISORS = {
+    1: [],
+    2: [11],
+    3: [],
+    4: [101],
+    5: [],
+    6: [1001],
+    7: [],
+    8: [10001],
+    9: [],
+    10: [100001],
+    11: [],
+    12: [1000001],
+    13: [],
+    14: [10000001],
+    15: [],
+    16: [100000001],
+}
+
+def process_line(line):
+    ranges = []
+    for r in line.split(","):
+        parts = r.split("-")
+        assert len(parts) == 2
+        ranges.append((int(parts[0]), int(parts[1])))
+    return ranges
+
+
+def process_range(r):
+    invalid_ids = []
+    for n in range(r[0], r[1] + 1):
+        if is_invalid(n):
+            invalid_ids.append(n)
+    return invalid_ids
+
+def is_invalid(n):
+    num_digits = len(str(n))
+    divisors = DIVISORS[num_digits]
+    for divisor in divisors:
+        (q, r) = divmod(n, divisor)
+        if q > 0 and r == 0:
+            print(f"Invalid = {n}")
+            return True
+    return False
+
+
+if __name__ == "__main__":
+    main()
