@@ -12,12 +12,12 @@ def main():
                 rows.append([0] * len(row))
             rows.append(row)
             if len(rows) == 3:
-                total_rolls += count_pickable_rolls(rows)
+                total_rolls += count_accessible_rolls(rows)
                 _ = rows.pop(0)
 
         # Last roll. Append 0 row to make calulcations easier.
         rows.append([0] * len(row))
-        total_rolls += count_pickable_rolls(rows)
+        total_rolls += count_accessible_rolls(rows)
 
     print(f"Total rolls = {total_rolls}")
 
@@ -30,9 +30,9 @@ def process_line(line):
             row.append(0)
     return row
 
-def count_pickable_rolls(rows):
+def count_accessible_rolls(rows):
     print(f"Counting rolls in {rows}")
-    num_pickable = 0
+    num_accessible = 0
     assert len(rows) == 3
     top = rows[0]
     middle = rows[1]
@@ -62,9 +62,9 @@ def count_pickable_rolls(rows):
 
         if num_rolls < 4:
             print(f"Selecting roll in cell {i}")
-            num_pickable += 1
+            num_accessible += 1
 
-    return num_pickable
+    return num_accessible
 
 if __name__ == "__main__":
     main()
